@@ -1,2 +1,2 @@
 # algorithm-study
-Coding test study with Python
+코딩테스트 연습 with Python
