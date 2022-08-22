@@ -9,18 +9,15 @@ import re
 def solution():
     n = int(sys.stdin.readline())
     serial = []
+    s_sum = {}
+
     for _ in range(n):
-        serial.append(sys.stdin.readline().strip())
-    serial.sort(key=len)
-    for m in range(n - 1, 0, -1):  # n-1 .. 1
-        for i in range(m):
-            if len(serial[i]) == len(serial[i + 1]):
-                l_num = list(map(int, re.findall(r'\d', serial[i])))
-                r_num = list(map(int, re.findall(r'\d', serial[i + 1])))
-                if sum(l_num) == sum(r_num):
-                    serial[i:i+2] = sorted(serial[i:i+2])
-                elif sum(l_num) > sum(r_num):
-                    serial[i], serial[i + 1] = serial[i + 1], serial[i]
+        serial.append(sys.stdin.readline().rstrip())
+    for s in serial:
+        nums = list(map(int, re.findall('\d', s)))  # 숫자만 추출
+        s_sum[s] = sum(nums)
+    serial.sort(key=lambda x: (len(x), s_sum[x], x))
+
     for s in serial:
         print(s)
 
