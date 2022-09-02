@@ -11,9 +11,8 @@ def solution():
         k, *s = sys.stdin.readline().rstrip().split()
         if k == '0':
             break
-        c_list = list(combinations(s, 6))
-        for c in c_list:
-            print(' '.join(c))
+        for c in combinations(s, 6):
+            print(*c)
         print()
 
 
