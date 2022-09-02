@@ -11,20 +11,17 @@ def solution():
         ps = sys.stdin.readline().rstrip()
         stack = []
         answer = 'YES'
-        if ps[0] == ')':
+        for i in range(len(ps)):
+            if ps[i] == '(':
+                stack.append(ps[i])
+            elif ps[i] == ')':
+                if stack:
+                    stack.pop()
+                else:
+                    answer = 'NO'
+                    break
+        if stack:
             answer = 'NO'
-        else:
-            for i in range(len(ps)):
-                if ps[i] == '(':
-                    stack.append(ps[i])
-                elif ps[i] == ')':
-                    if stack:
-                        stack.pop()
-                    else:
-                        answer = 'NO'
-                        break
-            if stack:
-                answer = 'NO'
         print(answer)
 
 
