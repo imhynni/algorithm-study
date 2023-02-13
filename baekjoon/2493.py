@@ -17,4 +17,17 @@ def solution():
     print(*answer)
 
 
-solution()
+def solution2():
+    n = int(sys.stdin.readline())
+    heights = list(map(int, sys.stdin.readline().split()))
+    stack = []
+    answer = [0] * n
+    for i in range(n - 1, -1, -1):
+        while stack and heights[stack[-1]] < heights[i]:
+            answer[stack.pop()] = i + 1
+        stack.append(i)
+    print(*answer)
+
+
+# solution()
+solution2()
