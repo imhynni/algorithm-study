@@ -9,6 +9,7 @@ directions = [(-1, -1), (-1, 0), (-1, 1), (0, -1),
               (0, 1), (1, -1), (1, 0), (1, 1)]
 n, m = map(int, sys.stdin.readline().split())
 area = []
+visited = [[False] * m for _ in range(n)]
 
 
 def solution():
@@ -17,14 +18,13 @@ def solution():
     answer = 0
     for i in range(n):
         for j in range(m):
-            visited = [[False] * m for _ in range(n)]
-            answer = max(answer, bfs(i, j, visited))
+            if visited[i][j] or area[i][j] == 1:
+                continue
+            answer = max(answer, bfs(i, j))
     print(answer)
 
 
-def bfs(i, j, visited):
-    if area[i][j] == 1:
-        return 0
+def bfs(i, j):
     count = 0
     q = deque()
     q.append((i, j))
@@ -38,10 +38,10 @@ def bfs(i, j, visited):
                 nx, ny = x + dx, y + dy
                 if nx < 0 or nx >= n or ny < 0 or ny >= m:
                     continue
-                if visited[nx][ny]:
-                    continue
                 if area[nx][ny] == 1:
                     return count
+                if visited[nx][ny]:
+                    continue
                 q.append((nx, ny))
                 visited[nx][ny] = True
 
