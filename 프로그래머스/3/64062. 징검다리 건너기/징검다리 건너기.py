@@ -1,25 +1,21 @@
 import heapq
-from collections import deque
-
 
 def solution(stones, k):
-    answer = 0
-    left, right = 1, 200_000_000
+    n = len(stones)
+    q = []
     
-    while left <= right:
-        mid = (left + right) // 2
-        count = 0
-        for stone in stones:
-            if mid > stone:
-                count += 1
-            else:
-                count = 0
-            if count >= k:
-                right = mid - 1
-                break
-        if count < k:
-            left = mid + 1
-            answer = max(answer, mid)
-
+    if n < k:
+        return max(stones)
+    
+    for i in range(k):
+        heapq.heappush(q, (-stones[i], i))
+    answer = -q[0][0]
+    
+    for i in range(1, n - k + 1):
+        while q and q[0][1] < i:
+            heapq.heappop(q)
+        heapq.heappush(q, (-stones[i + k - 1], i + k - 1))
+        answer = min(answer, -q[0][0])
+    
     
     return answer
