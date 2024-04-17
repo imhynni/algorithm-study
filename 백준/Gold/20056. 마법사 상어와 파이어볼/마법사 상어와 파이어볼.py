@@ -1,52 +1,53 @@
-from collections import defaultdict
 import sys
+from collections import defaultdict
+
+
+class Fireball:
+    def __init__(self, m, s, d):
+        self.mass = m
+        self.speed = s
+        self.direction = d
 
 
 def solution():
-    input = sys.stdin.readline
-    direction = [(-1, 0), (-1, 1), (0, 1), (1, 1),
-                 (1, 0), (1, -1), (0, -1), (-1, -1)]
-    N, M, K = map(int, input().split())
-    fireball = defaultdict(list)
-    for _ in range(M):
-        r, c, m, s, d = map(int, input().split())  # 위치, 질량, 속력, 방향
-        fireball[(r - 1, c - 1)].append((m, s, d))
-    for _ in range(K):
-        temp_move = []  # 모든 파이어볼이 이동한 후 한번에 갱신해주기 위해 저장해둘 리스트
-        for x, y in fireball.keys():
-            while fireball[(x, y)]:
-                m, s, d = fireball[(x, y)].pop()
-                dx, dy = direction[d]
-                nx, ny = (x + dx * s) % N, (y + dy * s) % N
-                temp_move.append((nx, ny, m, s, d))
-        # 이동한 파이어볼들 위치 갱신
-        for x, y, m, s, d in temp_move:
-            fireball[(x, y)].append((m, s, d))
-        # 파이어볼이 2개 이상 있는 위치 처리
-        for x, y in fireball.keys():
-            if len(fireball[(x, y)]) < 2:
+    directions = [(-1, 0), (-1, 1), (0, 1), (1, 1),
+                  (1, 0), (1, -1), (0, -1), (-1, -1)]
+    n, m, k = map(int, sys.stdin.readline().split())
+    area = defaultdict(list)
+    for _ in range(m):
+        r, c, mass, speed, direction = map(int, sys.stdin.readline().split())
+        area[(r - 1, c - 1)].append(Fireball(mass, speed, direction))
+    for _ in range(k):
+        area_temp = defaultdict(list)
+        for key, fireballs in area.items():
+            x, y = key
+            for fireball in fireballs:
+                dx, dy = directions[fireball.direction]
+                s = fireball.speed
+                nx, ny = (x + dx * s) % n, (y + dy * s) % n
+                area_temp[(nx, ny)].append(fireball)
+        for key, fireballs in area_temp.items():
+            if len(fireballs) < 2:
                 continue
-            mass_sum = 0
-            speed_sum = 0
-            size = len(fireball[(x, y)])
-            direction_check = fireball[(x, y)][-1][2] % 2
-            while fireball[(x, y)]:
-                m, s, d = fireball[(x, y)].pop()
-                mass_sum += m
-                speed_sum += s
-                if direction_check != d % 2:
-                    direction_check = -1
-            new_m = mass_sum // 5
-            if new_m == 0:
+            new_mass = sum(fireball.mass for fireball in fireballs) // 5
+            new_speed = sum(
+                fireball.speed for fireball in fireballs) // len(fireballs)
+            flag = fireballs[0].direction % 2
+            d = 0
+            for fireball in fireballs:
+                if fireball.direction % 2 != flag:
+                    d = 1
+                    break
+            area_temp[key] = []
+            if new_mass == 0:
                 continue
-            new_s = speed_sum // size
-            new_d = [0, 2, 4, 6] if direction_check != -1 else [1, 3, 5, 7]
-            for d in new_d:
-                fireball[(x, y)].append((new_m, new_s, d))
-    answer = 0
-    for fireballs in fireball.values():
-        for m, _, _ in fireballs:
-            answer += m
+            for i in range(0, 7, 2):
+                area_temp[key].append(
+                    Fireball(new_mass, new_speed, i + d))
+        area = area_temp
+
+    answer = sum(sum(fireball.mass for fireball in fireballs)
+                 for fireballs in area.values())
     print(answer)
 
 
