@@ -22,7 +22,6 @@ def solution():
             continue
         odd += 1
         if odd > k:
-            answer = max(answer, even)
             while left < n:
                 if s[left] % 2 == 0:
                     even -= 1
