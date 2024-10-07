@@ -14,9 +14,9 @@ def solution(N, number):
             for a in dp[j]:
                 for b in dp[i - j]:
                     dp[i].add(a + b)
+                    dp[i].add(a * b)
                     if a - b >= 0:
                         dp[i].add(a - b)
-                    dp[i].add(a * b)
                     if b != 0:
                         dp[i].add(a // b)
         if number in dp[i]:
