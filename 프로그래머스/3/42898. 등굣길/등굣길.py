@@ -1,6 +1,5 @@
 def solution(m, n, puddles):    
     puddles = {(y - 1, x - 1) for x, y in puddles}
-    print(puddles)
     dp = [[0] * m for _ in range(n)]
     dp[0][0] = 1
     
