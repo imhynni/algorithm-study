@@ -1,29 +1,37 @@
 import sys
-from itertools import combinations
 
 
-def total_score(team, score):
-    total = 0
-    for i, j in combinations(team, 2):
-        total += score[i][j] + score[j][i]
-    return total
+answer = float('inf')
+
+
+def make_team(n, r, start, scores, team_start):
+    global answer
+    if r == n // 2:
+        score_start = 0
+        score_link = 0
+        for j in range(n - 1):
+            for k in range(j + 1, n):
+                if team_start[j] and team_start[k]:
+                    score_start += scores[j][k] + scores[k][j]
+                elif not team_start[j] and not team_start[k]:
+                    score_link += scores[j][k] + scores[k][j]
+        answer = min(answer, abs(score_start - score_link))
+        return
+    for i in range(start, n):
+        team_start[i] = True
+        make_team(n, r + 1, i + 1, scores, team_start)
+        team_start[i] = False
 
 
 def solution():
     n = int(sys.stdin.readline())
-    score = []
+    scores = []
     for _ in range(n):
-        score.append(list(map(int, sys.stdin.readline().split())))
+        scores.append(list(map(int, sys.stdin.readline().split())))
 
-    answer = float("inf")
-    for team_1 in combinations(range(n), n // 2):
-        team_2 = [x for x in range(n) if x not in team_1]
-        if team_2[0] < team_1[0]:
-            break
-        score_1 = total_score(team_1, score)
-        score_2 = total_score(team_2, score)
-        answer = min(answer, abs(score_1 - score_2))
-
+    team_start = [False] * n
+    team_start[0] = True
+    make_team(n, 1, 1, scores, team_start)
     print(answer)
 
 
