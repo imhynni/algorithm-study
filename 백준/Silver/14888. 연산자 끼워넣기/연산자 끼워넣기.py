@@ -5,23 +5,9 @@ min_answer = float('inf')
 max_answer = float('-inf')
 
 
-def backtracking(n, nums, operators, result):
+def backtracking(n, nums, operators, result, total):
     global min_answer, max_answer
     if len(result) == n - 1:
-        total = nums[0]
-        for j in range(n - 1):
-            operator = result[j]
-            if operator == 0:
-                total += nums[j + 1]
-            elif operator == 1:
-                total -= nums[j + 1]
-            elif operator == 2:
-                total *= nums[j + 1]
-            elif operator == 3:
-                if total < 0:
-                    total = -(-total // nums[j + 1])
-                else:
-                    total //= nums[j + 1]
         min_answer = min(min_answer, total)
         max_answer = max(max_answer, total)
         return
@@ -30,7 +16,20 @@ def backtracking(n, nums, operators, result):
         if operators[i] > 0:
             result.append(i)
             operators[i] -= 1
-            backtracking(n, nums, operators, result)
+            curr = len(result)
+            temp_total = total
+            if i == 0:
+                temp_total += nums[curr]
+            elif i == 1:
+                temp_total -= nums[curr]
+            elif i == 2:
+                temp_total *= nums[curr]
+            elif i == 3:
+                if temp_total < 0:
+                    temp_total = -(-temp_total // nums[curr])
+                else:
+                    temp_total //= nums[curr]
+            backtracking(n, nums, operators, result, temp_total)
             result.pop()
             operators[i] += 1
 
@@ -40,7 +39,7 @@ def solution():
     n = int(input())
     nums = list(map(int, input().split()))
     operators = list(map(int, input().split()))
-    backtracking(n, nums, operators, [])
+    backtracking(n, nums, operators, [], nums[0])
     print(max_answer)
     print(min_answer)
 
