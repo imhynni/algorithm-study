@@ -9,16 +9,14 @@ def solution():
         t, p = map(int, input().split())
         counsels.append((t, p))
     dp = [0] * 1_500_001
-    answer = 0
     for i in range(n - 1, -1, -1):
         time, price = counsels[i]
         if i + time > n:
             dp[i] = dp[i + 1]
             continue
         dp[i] = max(dp[i + time] + price, dp[i + 1])
-        answer = max(answer, dp[i])
 
-    print(answer)
+    print(dp[0])
 
 
 solution()
