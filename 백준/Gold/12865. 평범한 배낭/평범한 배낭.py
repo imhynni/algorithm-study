@@ -8,7 +8,6 @@ def solution():
     for _ in range(n):
         w, v = map(int, input().split())
         items.append((w, v))
-    items.sort(key=lambda x: x[0])
     dp = [[0] * (k + 1) for _ in range(n + 1)]
     for i in range(1, n + 1):
         for j in range(1, k + 1):
