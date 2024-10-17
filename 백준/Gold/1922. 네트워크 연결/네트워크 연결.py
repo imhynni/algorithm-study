@@ -1,32 +1,43 @@
 import sys
-from collections import defaultdict
-import heapq
+
+
+def find_set(parents, n):
+    if parents[n] != n:
+        parents[n] = find_set(parents, parents[n])
+    return parents[n]
+
+
+def union(parents, a, b):
+    parent_a = find_set(parents, a)
+    parent_b = find_set(parents, b)
+    if parent_a == parent_b:
+        return False
+    if parent_a < parent_b:
+        parents[parent_b] = parent_a
+    else:
+        parents[parent_a] = parent_b
+    return True
 
 
 def solution():
     input = sys.stdin.readline
     n = int(input())
     m = int(input())
-    graph = defaultdict(list)
+    edges = []
     for _ in range(m):
         a, b, c = map(int, input().split())
-        graph[a].append((c, b))  # 비용, 노드
-        if a == b:
-            continue
-        graph[b].append((c, a))
-    visited = set()
-    queue = []
-    heapq.heappush(queue, (0, next(iter(graph))))
+        edges.append((a, b, c))
+    edges.sort(key=lambda x: x[2])
+    parents = [i for i in range(n + 1)]
     answer = 0
-    while queue:
-        cost, node = heapq.heappop(queue)
-        if node in visited:
-            continue
-        visited.add(node)
-        answer += cost
-        for adj_cost, adj_node in graph[node]:
-            if adj_node not in visited:
-                heapq.heappush(queue, (adj_cost, adj_node))
+    count = 0
+    for u, v, weight in edges:
+        if union(parents, u, v):
+            answer += weight
+            count += 1
+        if count == n - 1:
+            break
+
     print(answer)
 
 
