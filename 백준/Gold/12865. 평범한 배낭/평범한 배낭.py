@@ -2,20 +2,21 @@ import sys
 
 
 def solution():
-    n, k = map(int, sys.stdin.readline().split())
-    items = [(0, 0)]
+    input = sys.stdin.readline
+    n, k = map(int, input().split())
+    items = []
     for _ in range(n):
-        weight, value = map(int, sys.stdin.readline().split())
-        items.append((weight, value))  # 무게, 가치
-    dp = [[0] * (k + 1) for _ in range(n + 1)]  # i: 물건, j: 무게
+        w, v = map(int, input().split())
+        items.append((w, v))
+    items.sort(key=lambda x: x[0])
+    dp = [[0] * (k + 1) for _ in range(n + 1)]
     for i in range(1, n + 1):
         for j in range(1, k + 1):
-            if items[i][0] > j:
+            weight, value = items[i - 1]
+            if weight > j:
                 dp[i][j] = dp[i - 1][j]
-            else:
-                dp[i][j] = max(dp[i - 1][j],
-                               items[i][1] + dp[i - 1][j - items[i][0]])
-
+                continue
+            dp[i][j] = max(dp[i - 1][j], value + dp[i - 1][j - weight])
     print(dp[n][k])
 
 
