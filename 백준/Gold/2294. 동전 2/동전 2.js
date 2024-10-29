@@ -15,16 +15,9 @@ for (let i = 1; i < n + 1; i++) {
 const dp = Array(k + 1).fill(Infinity);
 dp[0] = 0;
 
-for (let i = 1; i <= k; i++) {
-  for (const coin of coins) {
-    if (coin > i) continue;
-    share = Math.floor(i / coin);
-    for (let j = share; j > 0; j--) {
-      if (j >= dp[i]) break;
-      remain = i - coin * j;
-      if (dp[remain] === Infinity) continue;
-      dp[i] = Math.min(dp[i], j + dp[remain]);
-    }
+for (const coin of coins) {
+  for (let i = coin; i <= k; i++) {
+    dp[i] = Math.min(dp[i], dp[i - coin] + 1);
   }
 }
 
