@@ -3,82 +3,39 @@ const input = require('fs')
   .toString()
   .split('\n');
 
-class Node {
-  constructor(value) {
-    this.value = value;
-    this.next = null;
-  }
-}
-
-class Queue {
-  constructor() {
-    this.head = null;
-    this.tail = null;
-    this.size = 0;
-  }
-
-  isEmpty() {
-    return this.size === 0;
-  }
-
-  push(node) {
-    if (this.isEmpty()) {
-      this.head = node;
-      this.tail = node;
-    } else {
-      this.tail.next = node;
-      this.tail = node;
-    }
-    this.size++;
-  }
-
-  popLeft() {
-    if (this.isEmpty()) return null;
-    const node = this.head;
-    this.head = this.head.next;
-    if (this.head === null) this.tail === null;
-    this.size--;
-    return node.value;
-  }
-}
-
 const T = +input[0];
 let index = 1;
+let duration;
+let graph;
+let dp;
 
 for (let t = 0; t < T; t++) {
   const [n, k] = input[index++].split(' ').map(Number);
-  const duration = input[index++].split(' ').map(Number);
-  const graph = new Map();
-  const indegree = Array(n + 1).fill(0);
+  duration = input[index++].split(' ').map(Number);
+  graph = new Map();
+  dp = Array(n + 1).fill(-1);
   for (let i = 0; i < k; i++) {
     const [x, y] = input[index++].split(' ').map(Number);
-    if (!graph.has(x)) {
-      graph.set(x, [y]);
+    if (!graph.has(y)) {
+      graph.set(y, [x]);
     } else {
-      graph.get(x).push(y);
+      graph.get(y).push(x);
     }
-    indegree[y] += 1;
   }
   const W = +input[index++];
-  const dp = Array(n + 1).fill(0);
-  const queue = new Queue();
-  let answer = 0;
-  for (let i = 1; i <= n; i++) {
-    if (indegree[i] === 0) {
-      queue.push(new Node(i));
-      dp[i] = duration[i - 1];
+
+  console.log(dfs(W));
+}
+
+function dfs(v) {
+  if (dp[v] !== -1) return dp[v];
+
+  let result = 0;
+  if (graph.has(v)) {
+    for (const parent of graph.get(v)) {
+      result = Math.max(result, dfs(parent));
     }
   }
-
-  while (!queue.isEmpty()) {
-    const node = queue.popLeft();
-    if (!graph.has(node)) continue;
-    for (const child of graph.get(node)) {
-      dp[child] = Math.max(dp[child], dp[node] + duration[child - 1]);
-      indegree[child] -= 1;
-      if (indegree[child] === 0) queue.push(new Node(child));
-    }
-  }
-
-  console.log(dp[W]);
+  dp[v] = result + duration[v - 1];
+  return dp[v];
 }
