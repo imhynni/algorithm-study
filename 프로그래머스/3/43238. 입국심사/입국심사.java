@@ -1,6 +1,6 @@
 class Solution {
     public long solution(int n, int[] times) {
-        long answer = (long) 1e18;
+        long answer = 0;
         long maxTime = 0;
         for (int i = 0; i < times.length; i++) {
             maxTime = Math.max(maxTime, times[i]);
@@ -13,7 +13,7 @@ class Solution {
             for (int time : times) {
                 sum += mid / time;
                 if (sum > n) {
-                    answer = Math.min(answer, mid);
+                    answer = mid;
                     end = mid - 1;
                     break;
                 }
@@ -21,7 +21,7 @@ class Solution {
             if (sum < n) {
                 start = mid + 1;
             } else if (sum == n) {
-                answer = Math.min(answer, mid);
+                answer = mid;
                 end = mid - 1;
             }
         }
