@@ -15,7 +15,7 @@ class Solution {
             if (i % 2 == 0) {
                 dp[i] = Math.min(dp[i], dp[i / 2] + 1);
             }
-            if (i - n >= 0) {
+            if (i - n >= x) {
                 dp[i] = Math.min(dp[i], dp[i - n] + 1);
             }
         }
