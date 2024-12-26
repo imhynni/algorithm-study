@@ -16,10 +16,10 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
-        HashMap<Integer, List<Node>> graph = new HashMap<>();
+        List<List<Node>> graph = new ArrayList<>();
 
-        for (int i = 1; i <= N; i++) {
-            graph.put(i, new ArrayList<>());
+        for (int i = 0; i <= N; i++) {
+            graph.add(new ArrayList<Node>());
         }
 
         for (int i = 0; i < M; i++) {
