@@ -9,5 +9,5 @@
 SELECT i.rest_id, i.rest_name, i.food_type, i.favorites, i.address, ROUND(AVG(r.review_score), 2) AS SCORE
 FROM (SELECT * FROM rest_info WHERE ADDRESS LIKE '서울%') AS i
 JOIN rest_review r USING(rest_id)
-GROUP BY rest_id
+GROUP BY i.rest_id, i.rest_name, i.food_type, i.favorites, i.address
 ORDER BY score DESC, i.favorites DESC;
