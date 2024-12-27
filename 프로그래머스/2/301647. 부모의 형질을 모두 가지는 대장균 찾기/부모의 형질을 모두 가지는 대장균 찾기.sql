@@ -1,0 +1,11 @@
+-- 테이블: 배양한 대장균 정보
+-- 부모의 형질을 모두 보유한 대장균
+-- 2진수
+
+-- 부모 찾아서 제노타입 비교
+
+SELECT C.ID, C.GENOTYPE, P.GENOTYPE AS PARENT_GENOTYPE
+FROM ECOLI_DATA C
+JOIN ECOLI_DATA P ON C.PARENT_ID = P.ID
+WHERE C.GENOTYPE & P.GENOTYPE = P.GENOTYPE
+ORDER BY C.ID;
