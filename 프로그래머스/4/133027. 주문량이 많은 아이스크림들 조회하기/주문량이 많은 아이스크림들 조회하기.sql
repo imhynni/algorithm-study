@@ -1,0 +1,23 @@
+-- 테이블: 상반기 주문 정보, 7월 주문 정보
+-- 7월 아이스크림 총 주문량 + 상반기 아이스크림 총 주문량
+-- 큰 순서 상위 3개의 맛
+
+-- 맛별로 총 주문량 구하기
+-- 정렬하고 3개까지 조회
+
+WITH FIRST_HALF_SUM AS (
+    SELECT FLAVOR, SUM(TOTAL_ORDER) AS TOTAL
+    FROM FIRST_HALF
+    GROUP BY FLAVOR
+),
+JULY_SUM AS (
+    SELECT FLAVOR, SUM(TOTAL_ORDER) AS TOTAL
+    FROM JULY
+    GROUP BY FLAVOR
+)
+
+SELECT FLAVOR
+FROM FIRST_HALF_SUM F
+JOIN JULY_SUM J USING(FLAVOR)
+ORDER BY F.TOTAL + J.TOTAL DESC
+LIMIT 3;
