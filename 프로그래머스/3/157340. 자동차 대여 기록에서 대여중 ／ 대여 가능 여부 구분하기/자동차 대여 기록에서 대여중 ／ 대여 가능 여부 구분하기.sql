@@ -1,0 +1,25 @@
+-- 2022 10 16
+-- 대여중, 대여가능 표시
+-- 자동차 아이디 내림차순
+
+-- 가능한 자동차만 필터링
+-- 카 아이디 중복 제거해서 가능한 자동차에 속하는지 확인하며 분기
+
+WITH RENTED AS (
+    SELECT DISTINCT(CAR_ID)
+    FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY
+    WHERE START_DATE <= '2022-10-16' AND '2022-10-16' <= END_DATE
+),
+CARS AS (
+    SELECT DISTINCT(CAR_ID)
+    FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY
+)
+
+SELECT C.CAR_ID,
+    CASE
+        WHEN R.CAR_ID IS NULL THEN '대여 가능'
+        ELSE '대여중'
+    END AS AVAILABILITY
+FROM CARS C
+LEFT JOIN RENTED R USING(CAR_ID)
+ORDER BY CAR_ID DESC;
