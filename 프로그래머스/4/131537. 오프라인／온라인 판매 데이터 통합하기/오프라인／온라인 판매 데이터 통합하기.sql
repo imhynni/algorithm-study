@@ -1,15 +1,13 @@
--- 테이블: 온라인 상품 판매 정보, 오프라인
--- 2022년 3월 오프라인/온라인 판매 데이터
--- 오프라인 유저 아이디 Null
--- 판매일 오름차순, 상품 아이디 오름, 유저아이디 오름
-
--- 1. 
+-- 온라인 상품 판매 정보, 오프라인 판매 정보
+-- 2022/03 오프라인/온라인 판매 데이터
+-- 오프라인 user id는 null로 표시
+-- 판매일 오름차순, 상품 id 오름, 유저 id 오름
 
 SELECT DATE_FORMAT(SALES_DATE, '%Y-%m-%d') AS SALES_DATE, PRODUCT_ID, USER_ID, SALES_AMOUNT
 FROM ONLINE_SALE
 WHERE SALES_DATE BETWEEN '2022-03-01' AND '2022-03-31'
 UNION
-SELECT DATE_FORMAT(SALES_DATE, '%Y-%m-%d') AS SALES_DATE, PRODUCT_ID, NULL AS USER_ID, SALES_AMOUNT
+SELECT DATE_FORMAT(SALES_DATE, '%Y-%m-%d'), PRODUCT_ID, NULL AS USER_ID, SALES_AMOUNT
 FROM OFFLINE_SALE
 WHERE SALES_DATE BETWEEN '2022-03-01' AND '2022-03-31'
 ORDER BY SALES_DATE, PRODUCT_ID, USER_ID;
