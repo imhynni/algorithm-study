@@ -42,7 +42,6 @@ class Solution {
                 if (dx != 0) {
                     nx = robot.r + dx / Math.abs(dx);
                 } else if (dy != 0) {
-                    nx = robot.r;
                     ny = robot.c + dy / Math.abs(dy);
                 }
 
