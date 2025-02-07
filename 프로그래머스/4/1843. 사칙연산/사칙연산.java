@@ -17,15 +17,15 @@ class Solution {
             dpMax[i][i] = Integer.parseInt(arr[i]);
         }
 
-        for (int i = 2; i < n; i += 2) {
-            for (int j = 0; j + i < n; j += 2) {
-                for (int k = j + 1; k < j + i; k += 2) {
+        for (int step = 2; step < n; step += 2) {
+            for (int j = 0; j + step < n; j += 2) {
+                for (int k = j + 1; k < j + step; k += 2) {
                     if (arr[k].equals("+")) {
-                        dpMin[j][j + i] = Math.min(dpMin[j][j + i], dpMin[j][k - 1] + dpMin[k + 1][j + i]);
-                        dpMax[j][j + i] = Math.max(dpMax[j][j + i], dpMax[j][k - 1] + dpMax[k + 1][j + i]);
+                        dpMin[j][j + step] = Math.min(dpMin[j][j + step], dpMin[j][k - 1] + dpMin[k + 1][j + step]);
+                        dpMax[j][j + step] = Math.max(dpMax[j][j + step], dpMax[j][k - 1] + dpMax[k + 1][j + step]);
                     } else {
-                        dpMin[j][j + i] = Math.min(dpMin[j][j + i], dpMin[j][k - 1] - dpMax[k + 1][j + i]);
-                        dpMax[j][j + i] = Math.max(dpMax[j][j + i], dpMax[j][k - 1] - dpMin[k + 1][j + i]);
+                        dpMin[j][j + step] = Math.min(dpMin[j][j + step], dpMin[j][k - 1] - dpMax[k + 1][j + step]);
+                        dpMax[j][j + step] = Math.max(dpMax[j][j + step], dpMax[j][k - 1] - dpMin[k + 1][j + step]);
                     }
                 }
             }
