@@ -6,6 +6,7 @@ class Solution {
         int c = relation[0].length;
         HashSet<Integer> candidate = new HashSet<>();    
         
+        // 비트마스킹
         Top: for (int i = 1; i < Math.pow(2, c); i++) {
             for (int candi : candidate) {
                 if ((i & candi) == candi) {
@@ -13,20 +14,14 @@ class Solution {
                 }
             }
             
-            ArrayList<Integer> keys = new ArrayList<>();
-            
-            for (int j = 0; j < c; j++) {
-                if (((1 << j) & i) != 0) {
-                    keys.add(j);
-                }
-            }
-            
             HashSet<String> rows = new HashSet<>();
             
-            for (int x = 0; x < r; x++) {
+            for (String[] row : relation) {
                 StringBuilder sb = new StringBuilder();
-                for (int key : keys) {
-                    sb.append(relation[x][key]);
+                for (int j = 0; j < c; j++) {
+                    if (((1 << j) & i) != 0) {
+                        sb.append(row[j]);
+                    }
                 }
                 rows.add(sb.toString());
             }
