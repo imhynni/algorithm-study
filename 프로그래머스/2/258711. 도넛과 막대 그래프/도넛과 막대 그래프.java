@@ -26,6 +26,7 @@ class Solution {
             if (!graph.containsKey(i)) continue;
             if (inCount[i] == 0 && graph.get(i).size() > 1) {
                 newNode = i;
+                break;
             }
         }
         
