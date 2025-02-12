@@ -2,8 +2,6 @@ import java.util.*;
 
 class Solution {
     public int solution(int distance, int[] rocks, int n) {
-        int answer = 0;
-        
         Arrays.sort(rocks);
         
         int left = 0, right = distance;
