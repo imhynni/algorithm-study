@@ -11,6 +11,7 @@ public class Main {
         int[] score = new int[N];
         int[] boss = new int[N];
         st = new StringTokenizer(br.readLine());
+
         for (int i = 0; i < N; i++) {
             boss[i] = Integer.parseInt(st.nextToken()) - 1;
         }
@@ -24,8 +25,11 @@ public class Main {
             score[i] += score[boss[i]];
         }
 
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < N; i++) {
-            System.out.print(score[i] + (i < N - 1 ? " " : ""));
+            sb.append(score[i] + (i < N - 1 ? " " : ""));
         }
+
+        System.out.println(sb);
     }
 }
