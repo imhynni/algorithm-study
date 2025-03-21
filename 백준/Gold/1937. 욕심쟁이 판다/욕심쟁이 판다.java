@@ -5,7 +5,7 @@ public class Main {
     static int[] dr = {0, 0, -1, 1};
     static int[] dc = {-1, 1, 0, 0};
     static int N;
-    static int[][] area, visited;
+    static int[][] area, dp;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -19,17 +19,13 @@ public class Main {
             }
         }
 
-        visited = new int[N][N];
-
-        for (int[] row : visited) {
-            Arrays.fill(row, -1);
-        }
+        dp = new int[N][N];
 
         int answer = 1;
 
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                if (visited[i][j] == -1)
+                if (dp[i][j] == 0)
                     answer = Math.max(answer, dfs(i, j));
             }
         }
@@ -38,23 +34,23 @@ public class Main {
     }
 
     static int dfs(int r, int c) {
+        if (dp[r][c] > 0) {
+            return dp[r][c];
+        }
+
+        dp[r][c] = 1;
+
         for (int d = 0; d < 4; d++) {
             int nr = r + dr[d];
             int nc = c + dc[d];
 
             if (nr < 0 || nr >= N || nc < 0 || nc >= N || area[nr][nc] <= area[r][c]) {
-                visited[r][c] = Math.max(visited[r][c], 1);
                 continue;
             }
 
-            if (visited[nr][nc] > -1) {
-                visited[r][c] = Math.max(visited[r][c], visited[nr][nc] + 1);
-                continue;
-            }
-
-            visited[r][c] = Math.max(visited[r][c], dfs(nr, nc) + 1);
+            dp[r][c] = Math.max(dp[r][c], dfs(nr, nc) + 1);
         }
 
-        return visited[r][c];
+        return dp[r][c];
     }
 }
